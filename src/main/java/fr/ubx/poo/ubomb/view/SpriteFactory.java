@@ -9,8 +9,6 @@ import fr.ubx.poo.ubomb.go.decor.bonus.*;
 import fr.ubx.poo.ubomb.go.decor.*;
 import javafx.scene.layout.Pane;
 
-import java.time.chrono.HijrahEra;
-
 import static fr.ubx.poo.ubomb.view.ImageResource.*;
 
 

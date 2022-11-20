@@ -26,6 +26,8 @@ public class Game {
     // Returns the player, monsters and bomb at a given position
     public List<GameObject> getGameObjects(Position position) {
         List<GameObject> gos = new LinkedList<>();
+        Monster monster1 = new Monster(new Position(10, 10));
+        gos.add(monster1);
         if (player().getPosition().equals(position))
             gos.add(player);
         return gos;

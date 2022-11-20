@@ -6,6 +6,6 @@ import fr.ubx.poo.ubomb.go.decor.bonus.*;
 public interface TakeVisitor {
     // Key
     default void take(Key key) {}
-
+    default void take(Heart heart){}
 
 }

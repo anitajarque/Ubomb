@@ -21,17 +21,26 @@ public class Player extends GameObject implements Movable, TakeVisitor {
 
     private Direction direction;
     private boolean moveRequested = false;
-    private final int lives;
+    private int lives; //Delete final (no make sense for me)
+    private int keys;
 
     public Player(Game game, Position position) {
         super(game, position);
         this.direction = Direction.DOWN;
         this.lives = game.configuration().playerLives();
+        keys=0;
+
     }
 
+    @Override
+    public void take(Heart heart) {
+        System.out.println("One more live ...");
+        lives++;
+    }
 
     @Override
     public void take(Key key) {
+        keys++;
         System.out.println("Take the key ...");
     }
 
@@ -45,6 +54,13 @@ public class Player extends GameObject implements Movable, TakeVisitor {
         setPosition(nextPos);
     }
 
+    public int getKeys() {
+        return keys;
+    }
+
+    public void setKeys(int keys) {
+        this.keys = keys;
+    }
 
     public int getLives() {
         return lives;
