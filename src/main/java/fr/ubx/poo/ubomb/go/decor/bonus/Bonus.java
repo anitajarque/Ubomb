@@ -14,10 +14,10 @@ public abstract class Bonus extends Decor implements Takeable {
         super(position);
     }
 
-    @Override
+    /*@Override
     public boolean walkableBy(Player player) {
         return true;
-    }
+    }*/
 
     @Override
     public void explode() {

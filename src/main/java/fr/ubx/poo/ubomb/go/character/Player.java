@@ -11,6 +11,7 @@ import fr.ubx.poo.ubomb.game.Position;
 import fr.ubx.poo.ubomb.go.GameObject;
 import fr.ubx.poo.ubomb.go.Movable;
 import fr.ubx.poo.ubomb.go.TakeVisitor;
+import fr.ubx.poo.ubomb.go.decor.Box;
 import fr.ubx.poo.ubomb.go.decor.Stone;
 import fr.ubx.poo.ubomb.go.decor.Tree;
 import fr.ubx.poo.ubomb.go.decor.bonus.*;
@@ -44,11 +45,13 @@ public class Player extends GameObject implements Movable, TakeVisitor {
         System.out.println("Take the key ...");
     }
 
+
+
     public void doMove(Direction direction) {
         // This method is called only if the move is possible, do not check again
         Position nextPos = direction.nextPosition(getPosition());
         GameObject next = game.grid().get(nextPos);
-        if (next instanceof Bonus bonus) {
+        if (next instanceof Bonus bonus) { //cambiar a takeble
                 bonus.takenBy(this);
         }
         setPosition(nextPos);
@@ -81,14 +84,26 @@ public class Player extends GameObject implements Movable, TakeVisitor {
     public final boolean canMove(Direction direction) {
         // Need to be updated ;-)
         GameObject next = game.grid().get(direction.nextPosition(getPosition()));
-        if(next instanceof Stone||next instanceof Tree){
+        if( next!=null && !next.walkableBy(this) ){
             return false;
         }
+
         if(direction.nextPosition(getPosition()).x()<0 || direction.nextPosition(getPosition()).y()<0 || game.grid().height()<=direction.nextPosition(getPosition()).y() || game.grid().width()<=direction.nextPosition(getPosition()).x()){
             return false;
         }
+        if(next instanceof Box box ){
+            if(box.canMove(direction)){
+                box.doMove(direction);
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
         return true;
     }
+
+
 
     public void update(long now) {
         if (moveRequested) {
@@ -103,4 +118,5 @@ public class Player extends GameObject implements Movable, TakeVisitor {
     public void explode() {
         // TODO
     }
+
 }

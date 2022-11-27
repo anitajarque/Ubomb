@@ -28,4 +28,5 @@ public class Monster extends GameObject implements Movable {
     public void doMove(Direction direction) {
 
     }
+
 }
