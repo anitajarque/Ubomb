@@ -4,6 +4,7 @@ import fr.ubx.poo.ubomb.go.GameObject;
 import fr.ubx.poo.ubomb.go.character.Monster;
 import fr.ubx.poo.ubomb.go.character.Player;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -11,11 +12,12 @@ public class Game {
 
     private final Configuration configuration;
     private final Player player;
-    private final Grid grid;
+    private final ArrayList<Grid> levels;
 
-    public Game(Configuration configuration, Grid grid) {
+    private int level = 0;
+    public Game(Configuration configuration, ArrayList<Grid> levels) {
         this.configuration = configuration;
-        this.grid = grid;
+        this.levels = levels;
         player = new Player(this, configuration.playerPosition());
     }
 
@@ -34,7 +36,7 @@ public class Game {
     }
 
     public Grid grid() {
-        return grid;
+        return  this.levels.get(0);
     }
 
     public Player player() {
