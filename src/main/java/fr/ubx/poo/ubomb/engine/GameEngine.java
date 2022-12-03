@@ -7,7 +7,9 @@ package fr.ubx.poo.ubomb.engine;
 import fr.ubx.poo.ubomb.game.Direction;
 import fr.ubx.poo.ubomb.game.Game;
 import fr.ubx.poo.ubomb.game.Position;
+import fr.ubx.poo.ubomb.go.GameObject;
 import fr.ubx.poo.ubomb.go.character.Player;
+import fr.ubx.poo.ubomb.go.decor.Princess;
 import fr.ubx.poo.ubomb.view.ImageResource;
 import fr.ubx.poo.ubomb.view.Sprite;
 import fr.ubx.poo.ubomb.view.SpriteFactory;
@@ -127,6 +129,12 @@ public final class GameEngine {
 
     private void checkCollision(long now) {
         // Check a collision between a monster and the player
+        /*GameObject next = game.grid().get(player.getDirection().nextPosition(player.getPosition()));
+        if (next instanceof Princess) {
+            gameLoop.stop();
+            Platform.exit();
+            System.exit(0);
+        }*/
     }
 
     private void processInput(long now) {

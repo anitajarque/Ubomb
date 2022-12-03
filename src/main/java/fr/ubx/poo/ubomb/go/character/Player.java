@@ -4,19 +4,15 @@
 
 package fr.ubx.poo.ubomb.go.character;
 
-import fr.ubx.poo.ubomb.engine.Timer;
 import fr.ubx.poo.ubomb.game.Direction;
 import fr.ubx.poo.ubomb.game.Game;
 import fr.ubx.poo.ubomb.game.Position;
 import fr.ubx.poo.ubomb.go.GameObject;
 import fr.ubx.poo.ubomb.go.Movable;
 import fr.ubx.poo.ubomb.go.TakeVisitor;
-import fr.ubx.poo.ubomb.go.decor.Box;
-import fr.ubx.poo.ubomb.go.decor.Stone;
-import fr.ubx.poo.ubomb.go.decor.Tree;
+import fr.ubx.poo.ubomb.go.decor.Princess;
 import fr.ubx.poo.ubomb.go.decor.bonus.*;
-
-import javax.swing.table.TableRowSorter;
+import javafx.application.Platform;
 
 public class Player extends GameObject implements Movable, TakeVisitor {
 
@@ -45,13 +41,11 @@ public class Player extends GameObject implements Movable, TakeVisitor {
         System.out.println("Take the key ...");
     }
 
-
-
     public void doMove(Direction direction) {
         // This method is called only if the move is possible, do not check again
         Position nextPos = direction.nextPosition(getPosition());
         GameObject next = game.grid().get(nextPos);
-        if (next instanceof Bonus bonus) { //cambiar a takeble
+        if (next instanceof Bonus bonus) {
                 bonus.takenBy(this);
         }
         setPosition(nextPos);
@@ -91,14 +85,20 @@ public class Player extends GameObject implements Movable, TakeVisitor {
         if(direction.nextPosition(getPosition()).x()<0 || direction.nextPosition(getPosition()).y()<0 || game.grid().height()<=direction.nextPosition(getPosition()).y() || game.grid().width()<=direction.nextPosition(getPosition()).x()){
             return false;
         }
-        if(next instanceof Box box ){
-            if(box.canMove(direction)){
-                box.doMove(direction);
+        if(next instanceof Movable obj ){
+            if(obj.canMove(direction)){
+                obj.doMove(direction);
                 return true;
             }
             else{
                 return false;
             }
+        }
+        //When the player is at the princess position we exit of the game
+        if(next instanceof Princess){ //
+            Platform.exit();
+            System.out.println("I've the princess I win");
+            System.exit(0);
         }
         return true;
     }
