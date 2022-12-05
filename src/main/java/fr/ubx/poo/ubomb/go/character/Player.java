@@ -45,10 +45,14 @@ public class Player extends GameObject implements Movable, TakeVisitor {
         // This method is called only if the move is possible, do not check again
         Position nextPos = direction.nextPosition(getPosition());
         GameObject next = game.grid().get(nextPos);
+
         if (next instanceof Bonus bonus) {
-                bonus.takenBy(this);
+            bonus.takenBy(this);
         }
-        setPosition(nextPos);
+        else if(next instanceof Movable movable){
+            movable.doMove(direction);
+        }
+        this.setPosition(nextPos);
     }
 
     public int getKeys() {
