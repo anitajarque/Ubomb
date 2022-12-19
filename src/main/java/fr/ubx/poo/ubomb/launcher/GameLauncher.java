@@ -25,7 +25,7 @@ public class GameLauncher {
             Reader in = new FileReader(file);
             config.load(in);
             System.out.println("File loaded");
-            numLevels = Integer.valueOf(config.getProperty("level", "1"));
+            numLevels = Integer.valueOf(config.getProperty("levels", "1"));
             compresion = Boolean.getBoolean(config.getProperty("compresion", "false"));
             bombBagCapacity = Integer.valueOf(config.getProperty("bomBagCapacity", "3"));
             playerLives = Integer.valueOf(config.getProperty("playerLives", "5"));
@@ -38,6 +38,8 @@ public class GameLauncher {
                 String stringLevel = config.getProperty("level" + Integer.toString(i+1));
                 levels.add(new MapLevel(stringLevel));
             }
+            System.out.println("Num of levels: " + numLevels);
+            System.out.println("Num of levels: " + levels.size());
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {

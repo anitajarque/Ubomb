@@ -2,14 +2,24 @@ package fr.ubx.poo.ubomb.game;
 import fr.ubx.poo.ubomb.go.GameObject;
 import fr.ubx.poo.ubomb.go.character.Monster;
 import fr.ubx.poo.ubomb.go.character.Player;
+import fr.ubx.poo.ubomb.go.decor.Decor;
+import fr.ubx.poo.ubomb.go.decor.Door;
 import fr.ubx.poo.ubomb.launcher.MapLevel;
+
+import javax.sound.midi.SysexMessage;
+import javax.swing.plaf.synth.SynthLookAndFeel;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 public class Game {
+
+    private boolean levelChanged = false;
     private final Configuration configuration;
     private final Player player;
     private final ArrayList<Level> levels;
+
+    private Level currentLevel;
     private int level = 0;
     public Game(Configuration configuration, ArrayList<MapLevel> maps) {
         this.configuration = configuration;
@@ -32,12 +42,40 @@ public class Game {
         return gos;
     }
     public Grid grid() {
-        return  this.levels.get(0);
+        return this.getLevel();
     }
     public Player player() {
         return this.player;
     }
     public Level getLevel(){
         return this.levels.get(this.level);
+    }
+
+    public void changeLevel(int level) {
+        int newLevel = this.level + level;
+        if(newLevel < this.levels.size() && newLevel>=0){
+            this.level = newLevel;
+            this.levelChanged = true;
+            boolean found = false;
+            Object list[] = this.levels.get(this.level).getElements().values().toArray();
+            int index = 0;
+            while(!found &&  index< list.length){
+                if(list[index] instanceof Door door && door.getLevel()== -1*level){
+                    System.out.println(this.player.getPosition());
+                    this.player.setPosition(door.getPosition());
+                    System.out.println(this.player.getPosition());
+                    found = true;
+                }
+                index++;
+            }
+        }
+    }
+
+    public boolean checkLevelChange(){
+        if(this.levelChanged){
+            this.levelChanged = false;
+            return true;
+        }
+        return false;
     }
 }
