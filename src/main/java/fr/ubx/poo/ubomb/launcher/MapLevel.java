@@ -9,6 +9,7 @@ public class MapLevel {
         this.height = height;
         this.grid = new Entity[height][width];
     }
+
     public MapLevel(String string){
         System.out.println("Compresed string " + string);
         String finalString = "";
@@ -40,6 +41,7 @@ public class MapLevel {
         this.height = height;
         this.width = string.indexOf("x");
         this.grid = new Entity[this.width][height];
+
         while(index<string.length()){
             while (string.charAt(index) != 'x'){
                 grid[x][y] = Entity.fromCode(string.charAt(index));
@@ -51,6 +53,7 @@ public class MapLevel {
             y++;
         }
     }
+
     public int width() {
         return width;    }
     public int height() {
