@@ -3,27 +3,29 @@ package fr.ubx.poo.ubomb.go.decor;
 import fr.ubx.poo.ubomb.game.Direction;
 import fr.ubx.poo.ubomb.game.Game;
 import fr.ubx.poo.ubomb.game.Position;
+import fr.ubx.poo.ubomb.go.GameObject;
 import fr.ubx.poo.ubomb.go.Movable;
-
+import fr.ubx.poo.ubomb.go.decor.bonus.Bonus;
+import java.util.HashMap;
+import java.util.Map;
 public class Box extends Decor implements Movable {
     public Box(Game game, Position position) {
         super(game, position);
     }
-
-    public Box(Position position) {
-        super(position);
-    }
-
     @Override
     public boolean canMove(Direction direction) {
-        return true;
-    }
-
-    @Override
-    public void doMove(Direction direction) { //como hacer que box no se ponga a null (game=null)
         Position nextPos = direction.nextPosition(getPosition());
-        game.grid().remove(getPosition());
-        game.grid().set(nextPos, this);
-        setPosition(nextPos);
+        if(nextPos.x()<0 || nextPos.y()<0 || game.grid().height()<=nextPos.y() || game.grid().width()<=nextPos.x()){
+            return false;
+        }
+        GameObject next = game.grid().get(direction.nextPosition(getPosition()));
+        return next == null;
+    }
+    @Override
+    public void doMove(Direction direction) {
+        Position nextPos = direction.nextPosition(getPosition());
+        remove();
+        this.game.getLevel().remove(getPosition());
+        this.game.getLevel().addDecor(new Box(this.game, nextPos));
     }
 }
