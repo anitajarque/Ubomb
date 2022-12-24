@@ -43,7 +43,8 @@ public class Level implements Grid {
                         break;
                     case Empty: break;
                     default:
-                        //                       throw new RuntimeException("EntityCode " + entity.name() + " not processed");
+ //                       throw new RuntimeException("EntityCode " + entity.name() + " not processed");
+
                 }
             }
     }

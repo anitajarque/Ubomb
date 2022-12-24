@@ -31,6 +31,7 @@ public enum Entity {
             if (entity.code == c)
                 return entity;
         }
+        System.out.println("Invalid character " + c);
         throw new MapException("Invalid character " + c);
     }
     public boolean isAccessible(){

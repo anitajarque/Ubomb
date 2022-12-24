@@ -1,5 +1,4 @@
 package fr.ubx.poo.ubomb.launcher;
-
 import fr.ubx.poo.ubomb.game.*;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -16,7 +15,6 @@ public class GameLauncher {
         String[] pos;
         Position position;
         ArrayList<MapLevel> levels = new ArrayList<>();
-
         String level;
         try {
             String file = "world/sample.properties";
@@ -36,8 +34,9 @@ public class GameLauncher {
             position = new Position(Integer.valueOf(pos[0]), Integer.valueOf(pos[1]));
             for(int i=0; i<numLevels; i++){
                 String stringLevel = config.getProperty("level" + Integer.toString(i+1));
-                levels.add(new MapLevel(stringLevel));
+                levels.add(new Level(new MapLevel(stringLevel)));
             }
+
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
