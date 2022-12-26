@@ -24,8 +24,8 @@ public class Box extends Decor implements Movable {
     @Override
     public void doMove(Direction direction) {
         Position nextPos = direction.nextPosition(getPosition());
-        remove();
-        this.game.getLevel().remove(getPosition());
-        this.game.getLevel().addDecor(new Box(this.game, nextPos));
+        game.getLevel().remove(getPosition());
+        this.setPosition(nextPos);
+        game.getLevel().set(nextPos,this);
     }
 }
