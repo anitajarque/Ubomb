@@ -47,15 +47,29 @@ public class GameLauncherView extends BorderPane {
         // Load from file
         loadItem.setOnAction(e -> {
             File file = fileChooser.showOpenDialog(stage);
+            Reader in = null;
             if (file != null) {
-                // TODO
-                System.err.println("[TODO] Not implemented");
+                try {
+                    in = new FileReader(file);
+                } catch (FileNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                }
+                Game game = GameLauncher.load(in);
+                GameEngine engine = new GameEngine(game, stage);
+                engine.start();
             }
         });
 
 
         defaultItem.setOnAction(e -> {
-            Game game = GameLauncher.load();
+            String file = "world/sample.properties";
+            Reader in = null;
+            try {
+                in = new FileReader(file);
+            } catch (FileNotFoundException ex) {
+                throw new RuntimeException(ex);
+            }
+            Game game = GameLauncher.load(in);
             GameEngine engine = new GameEngine(game, stage);
             engine.start();
         });
