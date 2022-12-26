@@ -1,5 +1,5 @@
 package fr.ubx.poo.ubomb.launcher;
-
+import fr.ubx.poo.ubomb.game.Grid;
 public class MapLevel {
     private final int width;
     private final int height;
@@ -9,7 +9,6 @@ public class MapLevel {
         this.height = height;
         this.grid = new Entity[height][width];
     }
-
     public MapLevel(String string){
         System.out.println("Compresed string " + string);
         String finalString = "";
@@ -26,7 +25,8 @@ public class MapLevel {
             index++;
         }
         finalString += "x";
-        System.out.println("Compresed string " + finalString);
+        System.out.println("Uncompresed string " + finalString);
+        System.out.println("Len :" + finalString.length());
         string = finalString;
         if (string == null){
             System.out.println("null string");
@@ -41,10 +41,12 @@ public class MapLevel {
         this.height = height;
         this.width = string.indexOf("x");
         this.grid = new Entity[this.width][height];
-
-        while(index<string.length()){
+        System.out.println("height " + this.height);
+        System.out.println("width " + this.width);
+        while(y<this.height() ){
             while (string.charAt(index) != 'x'){
                 grid[x][y] = Entity.fromCode(string.charAt(index));
+                System.out.println(string.charAt(index) + " " +grid[x][y].toString());
                 index++;
                 x++;
             }
@@ -53,13 +55,13 @@ public class MapLevel {
             y++;
         }
     }
-
     public int width() {
         return width;    }
     public int height() {
         return height;
     }
     public Entity get(int i, int j) {
+        System.out.println("Coord : " + i + " " + j);
         return grid[j][i];
     }
     public void set(int i, int j, Entity entity) {

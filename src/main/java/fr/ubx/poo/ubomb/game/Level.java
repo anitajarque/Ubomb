@@ -18,10 +18,15 @@ public class Level implements Grid {
         this.width = entities.width();
         this.height = entities.height();
         this.game = game;
+        System.out.println("Level");
+        System.out.println(this.width);
+        System.out.println(this.height);
         for (int i = 0; i < width; i++)
             for (int j = 0; j < height; j++) {
                 Position position = new Position(i, j);
-                Entity entity = entities.get(i, j);
+                Entity entity = entities.get(j, i);
+//                System.out.println("get " + i + " " + j);
+//                System.out.println(entity.toString());
                 switch (entity) {
                     case Stone:
                         elements.put(position, new Stone(position));
@@ -41,10 +46,31 @@ public class Level implements Grid {
                     case Princess:
                         elements.put(position, new Princess(position));
                         break;
+                    case BombRangeInc:
+                        elements.put(position, new BombRangeInc(position));
+                        break;
+                    case BombRangeDec:
+                        elements.put(position, new BombRangeDec(position));
+                        break;
+                    case BombNumberInc:
+                        elements.put(position, new BombNumberInc(position));
+                        break;
+                    case BombNumberDec:
+                        elements.put(position, new BombNumberDec(position));
+                        break;
+                    case DoorPrevOpened:
+                        elements.put(position, new Door(this.game, position, -1, true));
+                        break;
+                    case DoorNextOpened:
+                        elements.put(position, new Door(this.game, position, 1, true));
+                        break;
+                    case DoorNextClosed:
+                        elements.put(position, new Door(this.game, position, 1, false));
+                        break;
                     case Empty: break;
                     default:
- //                       throw new RuntimeException("EntityCode " + entity.name() + " not processed");
-
+                        System.out.println(entity.toString());
+                        //                       throw new RuntimeException("EntityCode " + entity.name() + " not processed");
                 }
             }
     }

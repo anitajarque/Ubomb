@@ -99,10 +99,23 @@ public final class GameEngine {
 
                 // Graphic update
                 cleanupSprites();
+                checkLevelChange();
                 render();
                 statusBar.update(game);
             }
         };
+    }
+
+    private void checkLevelChange() {
+        if(this.game.checkLevelChange()){
+            sprites.forEach(Sprite::remove);
+            sprites.clear();
+            this.game.getLevel().getElements().values().forEach(decor -> {
+                sprites.add(SpriteFactory.create(layer, decor));
+                decor.setModified(true);
+            });
+            sprites.add(new SpritePlayer(layer, player));
+        }
     }
 
     private void checkExplosions() {
@@ -201,4 +214,5 @@ public final class GameEngine {
     public void start() {
         gameLoop.start();
     }
+
 }
