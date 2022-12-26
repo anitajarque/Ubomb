@@ -7,9 +7,7 @@ package fr.ubx.poo.ubomb.go.character;
 import fr.ubx.poo.ubomb.game.Direction;
 import fr.ubx.poo.ubomb.game.Game;
 import fr.ubx.poo.ubomb.game.Position;
-import fr.ubx.poo.ubomb.go.GameObject;
-import fr.ubx.poo.ubomb.go.Movable;
-import fr.ubx.poo.ubomb.go.TakeVisitor;
+import fr.ubx.poo.ubomb.go.*;
 import fr.ubx.poo.ubomb.go.decor.Princess;
 import fr.ubx.poo.ubomb.go.decor.bonus.*;
 import javafx.application.Platform;
@@ -46,13 +44,14 @@ public class Player extends GameObject implements Movable, TakeVisitor {
         Position nextPos = direction.nextPosition(getPosition());
         GameObject next = game.grid().get(nextPos);
 
-        if (next instanceof Bonus bonus) {
-            bonus.takenBy(this);
+
+        this.setPosition(nextPos);
+        if (next instanceof Takeable takeable) {
+            takeable.takenBy(this);
         }
-        else if(next instanceof Movable movable){
+        if(next instanceof Movable movable){
             movable.doMove(direction);
         }
-        this.setPosition(nextPos);
     }
 
     public int getKeys() {

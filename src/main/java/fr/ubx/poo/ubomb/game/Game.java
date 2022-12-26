@@ -2,18 +2,28 @@ package fr.ubx.poo.ubomb.game;
 import fr.ubx.poo.ubomb.go.GameObject;
 import fr.ubx.poo.ubomb.go.character.Monster;
 import fr.ubx.poo.ubomb.go.character.Player;
+import fr.ubx.poo.ubomb.go.decor.Door;
 import fr.ubx.poo.ubomb.launcher.MapLevel;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 public class Game {
+
+    private boolean levelChanged = false;
     private final Configuration configuration;
     private final Player player;
+<<<<<<< HEAD
     //private final ArrayList<Grid> levels;
     private int level = 0;
     private final ArrayList<Level> levels;
     //private int level = 0;
     
+=======
+    private final ArrayList<Level> levels;
+
+    private int level = 0;
+>>>>>>> cd65a5da359f42aed5450569ee94ce1f3cac17e3
     public Game(Configuration configuration, ArrayList<MapLevel> maps) {
         this.configuration = configuration;
         this.levels = new ArrayList<>();
@@ -35,12 +45,38 @@ public class Game {
         return gos;
     }
     public Grid grid() {
-        return  this.levels.get(0);
+        return this.getLevel();
     }
     public Player player() {
         return this.player;
     }
     public Level getLevel(){
         return this.levels.get(this.level);
+    }
+
+    public void changeLevel(int level) {
+        int newLevel = this.level + level;
+        if(newLevel < this.levels.size() && newLevel>=0){
+            this.level = newLevel;
+            this.levelChanged = true;
+            boolean found = false;
+            Object list[] = this.levels.get(this.level).getElements().values().toArray();
+            int index = 0;
+            while(!found &&  index< list.length){
+                if(list[index] instanceof Door door && door.getLevel()== -1*level){
+                    this.player.setPosition(door.getPosition());
+                    found = true;
+                }
+                index++;
+            }
+        }
+    }
+
+    public boolean checkLevelChange(){
+        if(this.levelChanged){
+            this.levelChanged = false;
+            return true;
+        }
+        return false;
     }
 }
