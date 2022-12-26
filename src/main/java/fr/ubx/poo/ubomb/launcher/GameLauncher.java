@@ -10,7 +10,7 @@ import java.util.Properties;
 import static javafx.beans.property.IntegerProperty.integerProperty;
 
 public class GameLauncher {
-    public static Game load() {
+    public static Game load(Reader in) {
         boolean compresion;
         int x, y, bombBagCapacity, playerLives, playerInvisibulityTime, mosterVelocity, monsterInvisibilyTime, numLevels;
         String[] pos;
@@ -19,10 +19,7 @@ public class GameLauncher {
 
         String level;
         try {
-            String file = "world/sample.properties";
             Properties config = new Properties();
-            ;
-            Reader in = new FileReader(file);
             config.load(in);
             System.out.println("File loaded");
             numLevels = Integer.valueOf(config.getProperty("levels", "1"));
