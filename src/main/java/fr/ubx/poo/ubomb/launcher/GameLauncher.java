@@ -34,7 +34,7 @@ public class GameLauncher {
             position = new Position(Integer.valueOf(pos[0]), Integer.valueOf(pos[1]));
             for(int i=0; i<numLevels; i++){
                 String stringLevel = config.getProperty("level" + Integer.toString(i+1));
-                levels.add(new Level(new MapLevel(stringLevel)));
+                levels.add((new MapLevel(stringLevel)));
             }
 
         } catch (FileNotFoundException e) {
