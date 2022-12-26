@@ -1,10 +1,15 @@
 package fr.ubx.poo.ubomb.game;
+import fr.ubx.poo.ubomb.go.character.Monster;
 import fr.ubx.poo.ubomb.go.decor.Princess;
 import fr.ubx.poo.ubomb.go.decor.bonus.*;
 import fr.ubx.poo.ubomb.go.decor.*;
+import fr.ubx.poo.ubomb.go.decor.bonus.bomb.BombNumberDec;
+import fr.ubx.poo.ubomb.go.decor.bonus.bomb.BombNumberInc;
+import fr.ubx.poo.ubomb.go.decor.bonus.bombRange.BombRangeDec;
+import fr.ubx.poo.ubomb.go.decor.bonus.bombRange.BombRangeInc;
 import fr.ubx.poo.ubomb.launcher.Entity;
 import fr.ubx.poo.ubomb.launcher.MapLevel;
-import javafx.geometry.Pos;
+
 import java.util.*;
 
 public class Level implements Grid {
@@ -45,6 +50,9 @@ public class Level implements Grid {
                         break;
                     case Princess:
                         elements.put(position, new Princess(position));
+                        break;
+                    case Monster:
+                        elements.put(position, new Monster(this.game, position));
                         break;
                     case BombRangeInc:
                         elements.put(position, new BombRangeInc(position));

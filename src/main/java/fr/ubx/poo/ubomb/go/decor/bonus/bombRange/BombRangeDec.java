@@ -1,18 +1,19 @@
-package fr.ubx.poo.ubomb.go.decor.bonus;
+package fr.ubx.poo.ubomb.go.decor.bonus.bombRange;
 
 import fr.ubx.poo.ubomb.game.Position;
 import fr.ubx.poo.ubomb.go.Takeable;
 import fr.ubx.poo.ubomb.go.character.Player;
+import fr.ubx.poo.ubomb.go.decor.bonus.Bonus;
 
-public class BombRangeDec extends Bonus implements Takeable {
+public class BombRangeDec extends BombRange {
     public BombRangeDec(Position position) {
         super(position);
     }
-    @Override
-    public void explode() {}
 
     @Override
     public void takenBy(Player player) {
-        remove();
+        if(player.getBombRange()>0){
+            super.takenBy(player);
+        }
     }
 }

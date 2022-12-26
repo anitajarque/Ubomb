@@ -10,6 +10,10 @@ import fr.ubx.poo.ubomb.game.Position;
 import fr.ubx.poo.ubomb.go.*;
 import fr.ubx.poo.ubomb.go.decor.Princess;
 import fr.ubx.poo.ubomb.go.decor.bonus.*;
+import fr.ubx.poo.ubomb.go.decor.bonus.bomb.Bomb;
+import fr.ubx.poo.ubomb.go.decor.bonus.bomb.BombNumberDec;
+import fr.ubx.poo.ubomb.go.decor.bonus.bombRange.BombRange;
+import fr.ubx.poo.ubomb.go.decor.bonus.bombRange.BombRangeDec;
 import javafx.application.Platform;
 
 public class Player extends GameObject implements Movable, TakeVisitor {
@@ -18,13 +22,53 @@ public class Player extends GameObject implements Movable, TakeVisitor {
     private boolean moveRequested = false;
     private int lives; //Delete final (no make sense for me)
     private int keys;
+    private int bombRange;
+    private int numBombs;
+    private int bombBagCapacity;
+    private long time; //if there is more than one player
 
-    public Player(Game game, Position position) {
+    public long getTime() {
+        return time;
+    }
+    public void setTime(long time) {
+        this.time = time;
+    }
+
+    public Player(Game game, Position position, int bombBagCapacity) {
         super(game, position);
+        bombRange=1;
+        numBombs=0;
+        this.bombBagCapacity = bombBagCapacity;
         this.direction = Direction.DOWN;
         this.lives = game.configuration().playerLives();
         keys=0;
 
+    }
+
+
+    @Override
+    public void take(BombRange bombRangeElement) {
+        if(bombRangeElement instanceof BombRangeDec){
+            bombRange--;
+            System.out.println("One less range bomb ...");
+        }
+        else{
+            bombRange++;
+            System.out.println("One more range bomb ...");
+        }
+
+    }
+
+    @Override
+    public void take(Bomb bomb) {
+        if(bomb instanceof BombNumberDec) {
+            numBombs--;
+            System.out.println("One less range bomb ...");
+        }
+        else{
+            numBombs++;
+            System.out.println("One more range bomb ...");
+        }
     }
 
     @Override
@@ -44,7 +88,6 @@ public class Player extends GameObject implements Movable, TakeVisitor {
         Position nextPos = direction.nextPosition(getPosition());
         GameObject next = game.grid().get(nextPos);
 
-
         this.setPosition(nextPos);
         if (next instanceof Takeable takeable) {
             takeable.takenBy(this);
@@ -52,6 +95,7 @@ public class Player extends GameObject implements Movable, TakeVisitor {
         if(next instanceof Movable movable){
             movable.doMove(direction);
         }
+        this.setPosition(nextPos);
     }
 
     public int getKeys() {
@@ -64,6 +108,10 @@ public class Player extends GameObject implements Movable, TakeVisitor {
 
     public int getLives() {
         return lives;
+    }
+
+    public void damage() {
+        this.lives--;
     }
 
     public Direction getDirection() {
@@ -88,6 +136,9 @@ public class Player extends GameObject implements Movable, TakeVisitor {
         if(direction.nextPosition(getPosition()).x()<0 || direction.nextPosition(getPosition()).y()<0 || game.grid().height()<=direction.nextPosition(getPosition()).y() || game.grid().width()<=direction.nextPosition(getPosition()).x()){
             return false;
         }
+        if(next instanceof Monster){
+            return true;
+        }
         if(next instanceof Movable obj ){
             if(obj.canMove(direction)){
                 obj.doMove(direction);
@@ -106,8 +157,6 @@ public class Player extends GameObject implements Movable, TakeVisitor {
         return true;
     }
 
-
-
     public void update(long now) {
         if (moveRequested) {
             if (canMove(direction)) {
@@ -120,6 +169,18 @@ public class Player extends GameObject implements Movable, TakeVisitor {
     @Override
     public void explode() {
         // TODO
+    }
+
+    public int getBombRange() {
+        return bombRange;
+    }
+
+    public int getNumBombs() {
+        return numBombs;
+    }
+
+    public int getBombBagCapacity() {
+        return bombBagCapacity;
     }
 
 }

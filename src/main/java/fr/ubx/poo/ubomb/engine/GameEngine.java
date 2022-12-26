@@ -8,12 +8,11 @@ import fr.ubx.poo.ubomb.game.Direction;
 import fr.ubx.poo.ubomb.game.Game;
 import fr.ubx.poo.ubomb.game.Position;
 import fr.ubx.poo.ubomb.go.GameObject;
+import fr.ubx.poo.ubomb.go.character.Monster;
 import fr.ubx.poo.ubomb.go.character.Player;
+import fr.ubx.poo.ubomb.go.decor.Decor;
 import fr.ubx.poo.ubomb.go.decor.Princess;
-import fr.ubx.poo.ubomb.view.ImageResource;
-import fr.ubx.poo.ubomb.view.Sprite;
-import fr.ubx.poo.ubomb.view.SpriteFactory;
-import fr.ubx.poo.ubomb.view.SpritePlayer;
+import fr.ubx.poo.ubomb.view.*;
 import javafx.animation.AnimationTimer;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
@@ -29,10 +28,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 public final class GameEngine {
@@ -42,6 +38,8 @@ public final class GameEngine {
     private final Player player;
     private final List<Sprite> sprites = new LinkedList<>();
     private final Set<Sprite> cleanUpSprites = new HashSet<>();
+
+    private final ArrayList<Monster> monsterList = new ArrayList<>();
     private final Stage stage;
     private StatusBar statusBar;
     private Pane layer;
@@ -81,7 +79,9 @@ public final class GameEngine {
             sprites.add(SpriteFactory.create(layer, decor));
             decor.setModified(true);
         }
-
+        Monster nMonster = new Monster(game,new Position(10, 10));
+        game.getLevel().addDecor(nMonster);
+        sprites.add(new SpriteMonster(layer, nMonster));
         sprites.add(new SpritePlayer(layer, player));
     }
 
@@ -141,13 +141,14 @@ public final class GameEngine {
     }
 
     private void checkCollision(long now) {
-        // Check a collision between a monster and the player
-        /*GameObject next = game.grid().get(player.getDirection().nextPosition(player.getPosition()));
-        if (next instanceof Princess) {
-            gameLoop.stop();
-            Platform.exit();
-            System.exit(0);
-        }*/
+        System.out.println(now);
+        if((player.getTime() + (game.configuration().playerInvisibilityTime() * 1000000)) < now){ //comparing the value of now and invisibilityTime, now it was really big that's why I decided to put 100000 because with that number I've the control of the invisibility
+            Decor value = game.getLevel().get(player.getPosition());
+            if(value instanceof Monster){
+                player.damage();
+                player.setTime(now);
+            }
+        }
     }
 
     private void processInput(long now) {

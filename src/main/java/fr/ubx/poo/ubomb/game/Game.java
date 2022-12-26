@@ -4,33 +4,26 @@ import fr.ubx.poo.ubomb.go.character.Monster;
 import fr.ubx.poo.ubomb.go.character.Player;
 import fr.ubx.poo.ubomb.go.decor.Door;
 import fr.ubx.poo.ubomb.launcher.MapLevel;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+
 public class Game {
 
     private boolean levelChanged = false;
     private final Configuration configuration;
     private final Player player;
-<<<<<<< HEAD
-    //private final ArrayList<Grid> levels;
     private int level = 0;
-    private final ArrayList<Level> levels;
-    //private int level = 0;
-    
-=======
     private final ArrayList<Level> levels;
 
-    private int level = 0;
->>>>>>> cd65a5da359f42aed5450569ee94ce1f3cac17e3
+
     public Game(Configuration configuration, ArrayList<MapLevel> maps) {
         this.configuration = configuration;
         this.levels = new ArrayList<>();
         for(MapLevel map : maps){
             this.levels.add(new Level(this, map));
         }
-        player = new Player(this, configuration.playerPosition());
+        player = new Player(this, configuration.playerPosition(), configuration().bombBagCapacity());
     }
     public Configuration configuration() {
         return configuration;

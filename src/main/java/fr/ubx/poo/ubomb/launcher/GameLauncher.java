@@ -33,11 +33,8 @@ public class GameLauncher {
             position = new Position(Integer.valueOf(pos[0]), Integer.valueOf(pos[1]));
             for(int i=0; i<numLevels; i++){
                 String stringLevel = config.getProperty("level" + Integer.toString(i+1));
-<<<<<<< HEAD
                 levels.add((new MapLevel(stringLevel)));
-=======
                 levels.add(new MapLevel(stringLevel));
->>>>>>> cd65a5da359f42aed5450569ee94ce1f3cac17e3
             }
             System.out.println("Num of levels: " + numLevels);
             System.out.println("Num of levels: " + levels.size());
