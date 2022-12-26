@@ -71,6 +71,7 @@ public class Level implements Grid {
                     default:
                         System.out.println(entity.toString());
                         //                       throw new RuntimeException("EntityCode " + entity.name() + " not processed");
+
                 }
             }
     }

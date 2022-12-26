@@ -13,9 +13,12 @@ public class Game {
     private boolean levelChanged = false;
     private final Configuration configuration;
     private final Player player;
+    private final ArrayList<Grid> levels;
+    private int level = 0;
     private final ArrayList<Level> levels;
 
     private int level = 0;
+    
     public Game(Configuration configuration, ArrayList<MapLevel> maps) {
         this.configuration = configuration;
         this.levels = new ArrayList<>();

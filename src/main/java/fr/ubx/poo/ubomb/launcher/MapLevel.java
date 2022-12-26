@@ -1,5 +1,5 @@
 package fr.ubx.poo.ubomb.launcher;
-import fr.ubx.poo.ubomb.game.Grid;
+
 public class MapLevel {
     private final int width;
     private final int height;
@@ -9,6 +9,7 @@ public class MapLevel {
         this.height = height;
         this.grid = new Entity[height][width];
     }
+
     public MapLevel(String string){
         System.out.println("Compresed string " + string);
         String finalString = "";
@@ -41,9 +42,8 @@ public class MapLevel {
         this.height = height;
         this.width = string.indexOf("x");
         this.grid = new Entity[this.width][height];
-        System.out.println("height " + this.height);
-        System.out.println("width " + this.width);
-        while(y<this.height() ){
+
+        while(index<string.length()){
             while (string.charAt(index) != 'x'){
                 grid[x][y] = Entity.fromCode(string.charAt(index));
                 System.out.println(string.charAt(index) + " " +grid[x][y].toString());
@@ -55,6 +55,7 @@ public class MapLevel {
             y++;
         }
     }
+
     public int width() {
         return width;    }
     public int height() {
