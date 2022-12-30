@@ -7,8 +7,9 @@ import fr.ubx.poo.ubomb.go.GameObject;
 import fr.ubx.poo.ubomb.go.Movable;
 import fr.ubx.poo.ubomb.go.Walkable;
 import fr.ubx.poo.ubomb.go.decor.Decor;
+import fr.ubx.poo.ubomb.go.decor.bonus.Bonus;
 
-public class Monster extends Decor{
+public class Monster extends GameObject{
 
     private Direction direction;
     private boolean moveRequested = false;
@@ -23,8 +24,26 @@ public class Monster extends Decor{
         this.direction = Direction.DOWN;
     }
 
-    public Direction getDirection() {
-        return Direction.UP;
+    public boolean canMove(Direction direction){
+        GameObject next = game.grid().get(direction.nextPosition(getPosition()));
+
+        if(direction.nextPosition(getPosition()).x()<0 || direction.nextPosition(getPosition()).y()<0 || game.grid().height()<=direction.nextPosition(getPosition()).y() || game.grid().width()<=direction.nextPosition(getPosition()).x()){
+            return false;
+        }
+        if(next instanceof Decor && !(next instanceof Bonus))
+            return false;
+        return true;
     }
 
+    public void move(Direction direction){
+        Position nextPos = direction.nextPosition(getPosition());
+        game.getLevel().getMonsters().remove(getPosition());
+        this.setPosition(nextPos);
+        game.getLevel().getMonsters().put(this.getPosition(), this);
+        this.direction = direction;
+    }
+
+    public Direction getDirection() {
+        return this.direction;
+    }
 }
