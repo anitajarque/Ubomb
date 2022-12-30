@@ -9,6 +9,7 @@ import fr.ubx.poo.ubomb.go.decor.bonus.bombRange.BombRangeDec;
 import fr.ubx.poo.ubomb.go.decor.bonus.bombRange.BombRangeInc;
 import fr.ubx.poo.ubomb.launcher.Entity;
 import fr.ubx.poo.ubomb.launcher.MapLevel;
+import javafx.geometry.Pos;
 
 import java.util.*;
 
@@ -18,6 +19,8 @@ public class Level implements Grid {
     private final MapLevel entities;
     private final Game game;
     private final Map<Position, Decor> elements = new HashMap<>();
+
+    private final Map<Position, Monster> monsters = new HashMap<>();
     public Level(Game game,MapLevel entities) {
         this.entities = entities;
         this.width = entities.width();
@@ -47,7 +50,7 @@ public class Level implements Grid {
                         elements.put(position, new Princess(position));
                         break;
                     case Monster:
-                        elements.put(position, new Monster(this.game, position));
+                        monsters.put(position, new Monster(this.game, position));
                         break;
                     case BombRangeInc:
                         elements.put(position, new BombRangeInc(position));
@@ -88,6 +91,8 @@ public class Level implements Grid {
     public Decor get(Position position) {
         return elements.get(position);
     }
+
+    public Monster getMonster(Position position){ return this.monsters.get(position);}
     @Override
     public void remove(Position position) {
         elements.remove(position);
@@ -111,6 +116,9 @@ public class Level implements Grid {
     public Map<Position, Decor> getElements() {
         return this.elements;
     }
+
+    public Map<Position, Monster> getMonsters() {return this.monsters; }
+
     public void  addDecor(Decor decor){
         elements.put(decor.getPosition(), decor);
     }

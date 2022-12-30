@@ -39,7 +39,7 @@ public final class GameEngine {
     private final List<Sprite> sprites = new LinkedList<>();
     private final Set<Sprite> cleanUpSprites = new HashSet<>();
 
-    private final ArrayList<Monster> monsterList = new ArrayList<>();
+    private final List<Monster> monsterList = new LinkedList<>();
     private final Stage stage;
     private StatusBar statusBar;
     private Pane layer;
@@ -68,7 +68,7 @@ public final class GameEngine {
         scene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
 
         stage.setScene(scene);
-        stage.setResizable(false);
+        stage.setResizable(true);
         stage.sizeToScene();
         stage.hide();
         stage.show();
@@ -82,12 +82,11 @@ public final class GameEngine {
             sprites.add(SpriteFactory.create(layer, decor));
             decor.setModified(true);
         }
-        /*
-        Monster nMonster = new Monster(game,new Position(10, 10));
-        game.getLevel().addDecor(nMonster);
-        sprites.add(new SpriteMonster(layer, nMonster));
-
-         */
+        for(Monster monster : game.getLevel().getMonsters().values()){
+            sprites.add(SpriteFactory.create(layer, monster));
+            monsterList.add(monster);
+            monster.setModified(true);
+        }
         sprites.add(new SpritePlayer(layer, player));
     }
 
@@ -100,10 +99,10 @@ public final class GameEngine {
 
                 // Do actions
                 update(now);
+                updateMonsters();
                 createNewBombs(now);
                 checkCollision(now);
                 checkExplosions();
-                updateMonsters();
 
                 // Graphic update
                 cleanupSprites();
@@ -116,6 +115,26 @@ public final class GameEngine {
     }
 
     private void updateMonsters() {
+        System.out.println("Upadte monsters");
+        this.monsterList.forEach(monster -> {
+            System.out.println(monster.toString());
+            if(this.random.nextFloat() < 0.05){
+                int dir;
+                Direction direction;
+                do{
+                    dir = (int) (this.random.nextFloat()*4 % 4);
+                    direction = switch (dir){
+                        case 0-> Direction.RIGHT;
+                        case 1 -> Direction.UP;
+                        case 2-> Direction.LEFT;
+                        case 3-> Direction.DOWN;
+                        default -> throw new RuntimeException("Dir not between 0 and 4");
+                    };
+                } while(!monster.canMove(direction));
+                monster.move(direction);
+
+            }
+        });
     }
 
     private void checkSpriteChanges() {
@@ -146,7 +165,15 @@ public final class GameEngine {
                 sprites.add(SpriteFactory.create(layer, decor));
                 decor.setModified(true);
             });
+            this.game.getLevel().getMonsters().values().forEach(moster -> {
+                sprites.add(SpriteFactory.create(layer, moster));
+                moster.setModified(true);
+            });
+            this.monsterList.clear();
             sprites.add(new SpritePlayer(layer, player));
+            this.game.getLevel().getMonsters().values().forEach(monster ->{
+                monsterList.add(monster);
+            });
         }
     }
 
@@ -173,12 +200,10 @@ public final class GameEngine {
     }
 
     private void checkCollision(long now) {
-        if((player.getTime() + (game.configuration().playerInvisibilityTime() * 1000000)) < now){ //comparing the value of now and invisibilityTime, now it was really big that's why I decided to put 100000 because with that number I've the control of the invisibility
-            Decor value = game.getLevel().get(player.getPosition());
-            if(value instanceof Monster){
-                player.damage();
-                player.setTime(now);
-            }
+        if(game.getLevel().getMonster(player.getPosition()) != null && now - game.player().getTime() > game.configuration().playerInvisibilityTime()*100000){
+            System.out.println("now : " + now + " player: " + player.getTime() + " dif: " + (now -player.getTime()));
+            player.damage();
+            player.setTime(now);
         }
     }
 
