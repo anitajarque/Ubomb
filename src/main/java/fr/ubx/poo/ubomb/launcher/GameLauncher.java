@@ -34,7 +34,6 @@ public class GameLauncher {
             for(int i=0; i<numLevels; i++){
                 String stringLevel = config.getProperty("level" + Integer.toString(i+1));
                 levels.add((new MapLevel(stringLevel)));
-                levels.add(new MapLevel(stringLevel));
             }
             System.out.println("Num of levels: " + numLevels);
             System.out.println("Num of levels: " + levels.size());

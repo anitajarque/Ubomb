@@ -2,8 +2,11 @@ package fr.ubx.poo.ubomb.game;
 import fr.ubx.poo.ubomb.go.GameObject;
 import fr.ubx.poo.ubomb.go.character.Monster;
 import fr.ubx.poo.ubomb.go.character.Player;
+import fr.ubx.poo.ubomb.go.decor.Decor;
 import fr.ubx.poo.ubomb.go.decor.Door;
 import fr.ubx.poo.ubomb.launcher.MapLevel;
+import javafx.geometry.Pos;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -20,6 +23,7 @@ public class Game {
     public Game(Configuration configuration, ArrayList<MapLevel> maps) {
         this.configuration = configuration;
         this.levels = new ArrayList<>();
+        int index=0;
         for(MapLevel map : maps){
             this.levels.add(new Level(this, map));
         }
@@ -69,6 +73,23 @@ public class Game {
         if(this.levelChanged){
             this.levelChanged = false;
             return true;
+        }
+        return false;
+    }
+
+    public boolean checkNearDoors(Position position) {
+        Position pos;
+        Decor decor;
+        for(int i=-1; i<=1; i++){
+            for(int j=-1; j<=1; j++){
+                pos = new Position(position.x()+i, position.y()+j);
+                decor = this.getLevel().get(pos);
+                if(decor instanceof Door door && !door.isOpen()){
+                    System.out.println("Closed door found");
+                    door.open();
+                    return true;
+                }
+            }
         }
         return false;
     }

@@ -35,4 +35,10 @@ public class Door extends Decor implements Walkable, Takeable {
     public int getLevel() {
         return level;
     }
+
+    public void open() {
+        this.open = true;
+        System.out.println("Door opened");
+        this.changeSprite(true);
+    }
 }

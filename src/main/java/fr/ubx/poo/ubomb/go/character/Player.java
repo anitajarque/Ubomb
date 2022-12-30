@@ -16,7 +16,7 @@ import fr.ubx.poo.ubomb.go.decor.bonus.bombRange.BombRange;
 import fr.ubx.poo.ubomb.go.decor.bonus.bombRange.BombRangeDec;
 import javafx.application.Platform;
 
-public class Player extends GameObject implements Movable, TakeVisitor {
+public class Player extends GameObject implements TakeVisitor {
 
     private Direction direction;
     private boolean moveRequested = false;
@@ -41,8 +41,7 @@ public class Player extends GameObject implements Movable, TakeVisitor {
         this.bombBagCapacity = bombBagCapacity;
         this.direction = Direction.DOWN;
         this.lives = game.configuration().playerLives();
-        keys=0;
-
+        keys=1;
     }
 
 
@@ -87,7 +86,6 @@ public class Player extends GameObject implements Movable, TakeVisitor {
         // This method is called only if the move is possible, do not check again
         Position nextPos = direction.nextPosition(getPosition());
         GameObject next = game.grid().get(nextPos);
-
         this.setPosition(nextPos);
         if (next instanceof Takeable takeable) {
             takeable.takenBy(this);
@@ -95,7 +93,6 @@ public class Player extends GameObject implements Movable, TakeVisitor {
         if(next instanceof Movable movable){
             movable.doMove(direction);
         }
-        this.setPosition(nextPos);
     }
 
     public int getKeys() {
@@ -148,12 +145,6 @@ public class Player extends GameObject implements Movable, TakeVisitor {
                 return false;
             }
         }
-        //When the player is at the princess position we exit of the game
-        if(next instanceof Princess){ //
-            Platform.exit();
-            System.out.println("I've the princess I win");
-            System.exit(0);
-        }
         return true;
     }
 
@@ -183,4 +174,9 @@ public class Player extends GameObject implements Movable, TakeVisitor {
         return bombBagCapacity;
     }
 
+    public void checkKey() {
+        if(this.keys >0 && this.game.checkNearDoors(this.getPosition())){
+            this.keys--;
+        }
+    }
 }

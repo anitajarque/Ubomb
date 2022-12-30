@@ -12,6 +12,16 @@ public abstract class GameObject implements Walkable {
     public final Game game;
     private boolean deleted = false;
     private boolean modified = true;
+
+    public boolean spriteChanged() {
+        return spriteChanged;
+    }
+
+    public void changeSprite(boolean changed) {
+        this.spriteChanged = changed;
+    }
+
+    private boolean spriteChanged = false;
     private Position position;
 
     public GameObject(Game game, Position position) {

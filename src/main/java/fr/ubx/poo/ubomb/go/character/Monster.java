@@ -8,7 +8,7 @@ import fr.ubx.poo.ubomb.go.Movable;
 import fr.ubx.poo.ubomb.go.Walkable;
 import fr.ubx.poo.ubomb.go.decor.Decor;
 
-public class Monster extends Decor implements Movable{
+public class Monster extends Decor{
 
     private Direction direction;
     private boolean moveRequested = false;
@@ -23,18 +23,8 @@ public class Monster extends Decor implements Movable{
         this.direction = Direction.DOWN;
     }
 
-    @Override
-    public boolean canMove(Direction direction) {
-        return false;
-    }
-
-    @Override
-    public void doMove(Direction direction) {
-
-    }
-
     public Direction getDirection() {
-        return direction;
+        return Direction.UP;
     }
 
 }

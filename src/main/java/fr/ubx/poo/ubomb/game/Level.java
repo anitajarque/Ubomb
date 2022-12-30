@@ -23,15 +23,10 @@ public class Level implements Grid {
         this.width = entities.width();
         this.height = entities.height();
         this.game = game;
-        System.out.println("Level");
-        System.out.println(this.width);
-        System.out.println(this.height);
         for (int i = 0; i < width; i++)
             for (int j = 0; j < height; j++) {
                 Position position = new Position(i, j);
                 Entity entity = entities.get(j, i);
-//                System.out.println("get " + i + " " + j);
-//                System.out.println(entity.toString());
                 switch (entity) {
                     case Stone:
                         elements.put(position, new Stone(position));

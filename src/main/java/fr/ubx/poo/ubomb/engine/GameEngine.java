@@ -44,6 +44,8 @@ public final class GameEngine {
     private StatusBar statusBar;
     private Pane layer;
     private Input input;
+    private long total = 0;
+    private final Random random;
 
     public GameEngine(Game game, final Stage stage) {
         this.stage = stage;
@@ -51,6 +53,7 @@ public final class GameEngine {
         this.player = game.player();
         initialize();
         buildAndSetGameLoop();
+        this.random = new Random();
     }
 
     private void initialize() {
@@ -79,15 +82,19 @@ public final class GameEngine {
             sprites.add(SpriteFactory.create(layer, decor));
             decor.setModified(true);
         }
+        /*
         Monster nMonster = new Monster(game,new Position(10, 10));
         game.getLevel().addDecor(nMonster);
         sprites.add(new SpriteMonster(layer, nMonster));
+
+         */
         sprites.add(new SpritePlayer(layer, player));
     }
 
     void buildAndSetGameLoop() {
         gameLoop = new AnimationTimer() {
             public void handle(long now) {
+
                 // Check keyboard actions
                 processInput(now);
 
@@ -96,14 +103,39 @@ public final class GameEngine {
                 createNewBombs(now);
                 checkCollision(now);
                 checkExplosions();
+                updateMonsters();
 
                 // Graphic update
                 cleanupSprites();
                 checkLevelChange();
+                checkSpriteChanges();
                 render();
                 statusBar.update(game);
             }
         };
+    }
+
+    private void updateMonsters() {
+    }
+
+    private void checkSpriteChanges() {
+        sprites.forEach(sprite -> {
+            if (sprite.getGameObject().spriteChanged()) {
+                game.grid().remove(sprite.getPosition());
+                cleanUpSprites.add(sprite);
+            }
+        });
+        cleanUpSprites.forEach(sprite -> {
+            if(sprite.getGameObject() instanceof Decor decor){
+                sprites.add(SpriteFactory.create(layer, decor));
+                decor.setModified(true);
+                decor.changeSprite(false);
+                game.grid().set(decor.getPosition(), decor);
+            }
+        });
+        cleanUpSprites.forEach(Sprite::remove);
+        sprites.removeAll(cleanUpSprites);
+        cleanUpSprites.clear();
     }
 
     private void checkLevelChange() {
@@ -141,7 +173,6 @@ public final class GameEngine {
     }
 
     private void checkCollision(long now) {
-        System.out.println(now);
         if((player.getTime() + (game.configuration().playerInvisibilityTime() * 1000000)) < now){ //comparing the value of now and invisibilityTime, now it was really big that's why I decided to put 100000 because with that number I've the control of the invisibility
             Decor value = game.getLevel().get(player.getPosition());
             if(value instanceof Monster){
@@ -164,6 +195,9 @@ public final class GameEngine {
             player.requestMove(Direction.RIGHT);
         } else if (input.isMoveUp()) {
             player.requestMove(Direction.UP);
+        } else if(input.isKey()){
+            player.checkKey();
+            System.out.println("ENTER pressed");
         }
         input.clear();
     }
