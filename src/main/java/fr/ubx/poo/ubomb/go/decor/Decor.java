@@ -14,4 +14,8 @@ public abstract class Decor extends GameObject {
         super(position);
     }
 
+    @Override
+    public void explode() {
+        super.explode();
+    }
 }

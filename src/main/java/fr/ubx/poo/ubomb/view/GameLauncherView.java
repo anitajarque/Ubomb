@@ -3,20 +3,15 @@ package fr.ubx.poo.ubomb.view;
 import fr.ubx.poo.ubomb.engine.GameEngine;
 import fr.ubx.poo.ubomb.game.Game;
 import fr.ubx.poo.ubomb.launcher.GameLauncher;
-import fr.ubx.poo.ubomb.launcher.MapLevel;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCombination;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
 import java.io.*;
 
-import static javafx.scene.input.KeyCode.SPACE;
 
 public class GameLauncherView extends BorderPane {
     private final FileChooser fileChooser = new FileChooser();
@@ -62,14 +57,7 @@ public class GameLauncherView extends BorderPane {
 
 
         defaultItem.setOnAction(e -> {
-            String file = "world/sample.properties";
-            Reader in = null;
-            try {
-                in = new FileReader(file);
-            } catch (FileNotFoundException ex) {
-                throw new RuntimeException(ex);
-            }
-            Game game = GameLauncher.load(in);
+            Game game = GameLauncher.laodDefault();
             GameEngine engine = new GameEngine(game, stage);
             engine.start();
         });

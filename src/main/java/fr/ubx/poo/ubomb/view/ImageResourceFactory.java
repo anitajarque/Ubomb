@@ -1,7 +1,6 @@
 package fr.ubx.poo.ubomb.view;
 
 import fr.ubx.poo.ubomb.game.Direction;
-import javafx.scene.image.Image;
 
 public class ImageResourceFactory {
     public static ImageResource digit(int i) {

@@ -12,7 +12,7 @@ public class BombRangeDec extends BombRange {
 
     @Override
     public void takenBy(Player player) {
-        if(player.getBombRange()>0){
+        if(player.getBombRange()>1){
             super.takenBy(player);
         }
     }

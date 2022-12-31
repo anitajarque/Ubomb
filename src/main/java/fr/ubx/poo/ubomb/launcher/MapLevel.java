@@ -1,5 +1,8 @@
 package fr.ubx.poo.ubomb.launcher;
-import fr.ubx.poo.ubomb.game.Grid;
+
+import static fr.ubx.poo.ubomb.launcher.Entity.*;
+import static fr.ubx.poo.ubomb.launcher.Entity.Empty;
+
 public class MapLevel {
     private final int width;
     private final int height;
@@ -9,6 +12,26 @@ public class MapLevel {
         this.height = height;
         this.grid = new Entity[height][width];
     }
+    public MapLevel() { //class MapLevelDefault delete just not to have one class "for nothing" and having this grid we solve the problem of the default map
+        grid = new Entity[][]{
+                {Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty},
+                {Empty, Empty, Stone, Empty, Stone, Empty, Stone, Stone, Stone, Stone, Empty, Empty},
+                {Empty, Empty, Empty, Empty, Stone, Empty, Stone, Empty, Empty, Stone, Empty, Empty},
+                {Empty, Empty, Empty, Empty, Stone, Empty, Stone, Empty, Empty, Stone, Empty, Empty},
+                {Empty, Empty, Empty, Empty, Stone, Stone, Stone, Empty, Empty, Empty, Empty, Empty},
+                {Empty, Empty, Empty, Empty, Empty, Empty, Empty, Key, Empty, Stone, Empty, Empty},
+                {Empty, Tree, Empty, Tree, Empty, Empty, Empty, Empty, Empty, Stone, Empty, Empty},
+                {Empty, Empty, Empty, Tree, Empty, Empty, Empty, Empty, Empty, Stone, Empty, Empty},
+                {Empty, Tree, Tree, Tree, Empty, Empty, Empty, Empty, Empty, Stone, Empty, Empty},
+                {Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty},
+                {Stone, Stone, Stone, Stone, Stone, Empty, Empty, Empty, Stone, Stone, Empty, Stone},
+                {Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty},
+                {Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty, Princess}
+        };
+        this.width = grid.length;
+        this.height = grid[0].length;
+    }
+
     public MapLevel(String string){
         System.out.println("Compresed string " + string);
         String finalString = "";
@@ -58,8 +81,5 @@ public class MapLevel {
     }
     public Entity get(int i, int j) {
         return grid[j][i];
-    }
-    public void set(int i, int j, Entity entity) {
-        grid[j][i] = entity;
     }
 }

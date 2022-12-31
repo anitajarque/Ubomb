@@ -19,6 +19,10 @@ public class Door extends Decor implements Walkable, Takeable {
     }
 
     @Override
+    public void explode() {
+    }
+
+    @Override
     public boolean walkableBy(Player player) {
         return this.open;
     }

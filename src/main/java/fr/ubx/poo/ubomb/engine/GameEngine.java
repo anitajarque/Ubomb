@@ -10,6 +10,7 @@ import fr.ubx.poo.ubomb.game.Position;
 import fr.ubx.poo.ubomb.go.GameObject;
 import fr.ubx.poo.ubomb.go.character.Monster;
 import fr.ubx.poo.ubomb.go.character.Player;
+import fr.ubx.poo.ubomb.go.decor.Bomb;
 import fr.ubx.poo.ubomb.go.decor.Decor;
 import fr.ubx.poo.ubomb.go.decor.Princess;
 import fr.ubx.poo.ubomb.view.*;
@@ -38,6 +39,8 @@ public final class GameEngine {
     private final Player player;
     private final List<Sprite> sprites = new LinkedList<>();
     private final Set<Sprite> cleanUpSprites = new HashSet<>();
+
+    private final List<Bomb> bombsList = new LinkedList<>();
 
     private final List<Monster> monsterList = new LinkedList<>();
     private final Stage stage;
@@ -115,9 +118,9 @@ public final class GameEngine {
     }
 
     private void updateMonsters() {
-        System.out.println("Upadte monsters");
+        //System.out.println("Update monsters");
         this.monsterList.forEach(monster -> {
-            System.out.println(monster.toString());
+            //System.out.println(monster.toString());
             if(this.random.nextFloat() < 0.05){
                 int dir;
                 Direction direction;
@@ -171,14 +174,85 @@ public final class GameEngine {
             });
             this.monsterList.clear();
             sprites.add(new SpritePlayer(layer, player));
-            this.game.getLevel().getMonsters().values().forEach(monster ->{
-                monsterList.add(monster);
+            this.game.getLevel().getMonsters().values().forEach(monsterList::add);
+            this.bombsList.forEach(bomb -> {
+                sprites.add(SpriteFactory.create(layer, bomb));
+                bomb.setModified(true);
             });
         }
     }
 
     private void checkExplosions() {
-        // Check explosions of bombs
+        for(Bomb bomb : bombsList){
+            if(bomb.getIsExploded()) {
+                int ixpos = 1;
+                int ixneg = 1;
+                int iypos = 1;
+                int iyneg = 1;
+                bomb.remove();
+                bombsList.remove(bomb);
+                if(game.grid().get(bomb.getPosition()) != null){
+                    game.grid().get(bomb.getPosition()).explode();
+                }
+
+                for(ixpos=1;ixpos<= player.getBombRange();ixpos++){
+                    GameObject go = game.grid().get(new Position(bomb.getPosition().x() + ixpos, bomb.getPosition().y()));
+                    if(go != null){
+                        go.explode();
+                        monsterList.remove(go);
+                        break;
+                    }
+                }
+                animateExplosion(bomb.getPosition(), new Position(bomb.getPosition().x() + ixpos, bomb.getPosition().y()));
+                for(ixneg=1;ixneg<= player.getBombRange();ixneg++){
+                    GameObject go = game.grid().get(new Position(bomb.getPosition().x() - ixneg, bomb.getPosition().y()));
+                    if(go != null){
+                        go.explode();
+                        monsterList.remove(go);
+                        break;
+                    }
+
+                }
+                animateExplosion(bomb.getPosition(), new Position(bomb.getPosition().x() - ixneg, bomb.getPosition().y()));
+                for(iypos=1;iypos<= player.getBombRange();iypos++){
+                    GameObject go =  game.grid().get(new Position(bomb.getPosition().x() , bomb.getPosition().y()+ iypos));
+                    if (go != null){
+                        go.explode();
+                        monsterList.remove(go);
+                        break;
+                    }
+                }
+                animateExplosion(bomb.getPosition(), new Position(bomb.getPosition().x(), bomb.getPosition().y() + iypos));
+                for(iyneg=1;iyneg<= player.getBombRange();iyneg++){
+                    GameObject go = game.grid().get(new Position(bomb.getPosition().x(), bomb.getPosition().y() - iyneg));
+                    if (go != null){
+                        go.explode();
+                        monsterList.remove(go);
+                        break;
+                    }
+                }
+                animateExplosion(bomb.getPosition(), new Position(bomb.getPosition().x(), bomb.getPosition().y() - iyneg));
+
+                int difx = Math.abs(player.getPosition().x() - bomb.getPosition().x());
+                int dify = Math.abs(player.getPosition().y() - bomb.getPosition().y());
+                if(difx<=player.getBombRange() && dify==0 || dify<=player.getBombRange() && difx==0){
+                    player.damage();
+                }
+
+                for(Monster monster: monsterList){
+                    difx = Math.abs(monster.getPosition().x() - bomb.getPosition().x());
+                    dify = Math.abs(monster.getPosition().y() - bomb.getPosition().y());
+                    if(difx<=player.getBombRange() && dify==0 || dify<=player.getBombRange() && difx==0){
+                        monster.explode();
+                        monsterList.remove(monster);
+                        game.getLevel().removeMonster(monster.getPosition());
+                    }
+
+                }
+                player.addBomb();
+            }
+
+        }
     }
 
     private void animateExplosion(Position src, Position dst) {
@@ -196,12 +270,24 @@ public final class GameEngine {
     }
 
     private void createNewBombs(long now) {
-        // Create a new Bomb is needed
+
+        for(Bomb bomb : bombsList){
+
+            if(bomb.getInitialTime()+(1000000000L * (4-bomb.getPhases()))<now && bomb.getPhases()>0){
+                bomb.addPhase();
+                bomb.setModified(true);
+
+            }
+            else if(bomb.getInitialTime()+(4000000000L)<now){
+                bomb.explode();
+            }
+
+        }
     }
 
     private void checkCollision(long now) {
         if(game.getLevel().getMonster(player.getPosition()) != null && now - game.player().getTime() > game.configuration().playerInvisibilityTime()*100000){
-            System.out.println("now : " + now + " player: " + player.getTime() + " dif: " + (now -player.getTime()));
+            //System.out.println("now : " + now + " player: " + player.getTime() + " dif: " + (now -player.getTime()));
             player.damage();
             player.setTime(now);
         }
@@ -222,7 +308,15 @@ public final class GameEngine {
             player.requestMove(Direction.UP);
         } else if(input.isKey()){
             player.checkKey();
-            System.out.println("ENTER pressed");
+            //System.out.println("ENTER pressed");
+        }
+        else if (input.isBomb() && player.getNumBombs()>0) {
+            Bomb bombNew = new Bomb(player.getPosition(),now);
+            bombsList.add(bombNew);
+            player.useBomb();
+            sprites.add(SpriteFactory.create(layer, bombNew));
+            bombNew.setModified(true);
+
         }
         input.clear();
     }

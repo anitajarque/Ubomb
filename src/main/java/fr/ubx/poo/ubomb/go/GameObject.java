@@ -6,7 +6,6 @@ package fr.ubx.poo.ubomb.go;
 
 import fr.ubx.poo.ubomb.game.Game;
 import fr.ubx.poo.ubomb.game.Position;
-import fr.ubx.poo.ubomb.go.decor.bonus.bombRange.BombRange;
 
 public abstract class GameObject implements Walkable {
     public final Game game;
@@ -59,5 +58,6 @@ public abstract class GameObject implements Walkable {
     }
 
     public void explode() {
+        remove();
     }
 }

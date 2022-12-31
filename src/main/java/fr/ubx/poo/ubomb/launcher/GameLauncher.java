@@ -2,16 +2,13 @@ package fr.ubx.poo.ubomb.launcher;
 
 import fr.ubx.poo.ubomb.game.*;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Properties;
-import static javafx.beans.property.IntegerProperty.integerProperty;
 
 public class GameLauncher {
     public static Game load(Reader in) {
-        boolean compresion;
         int x, y, bombBagCapacity, playerLives, playerInvisibulityTime, mosterVelocity, monsterInvisibilyTime, numLevels;
         String[] pos;
         Position position;
@@ -23,7 +20,6 @@ public class GameLauncher {
             config.load(in);
             System.out.println("File loaded");
             numLevels = Integer.valueOf(config.getProperty("levels", "1"));
-            compresion = Boolean.getBoolean(config.getProperty("compresion", "false"));
             bombBagCapacity = Integer.valueOf(config.getProperty("bomBagCapacity", "3"));
             playerLives = Integer.valueOf(config.getProperty("playerLives", "5"));
             playerInvisibulityTime = Integer.valueOf(config.getProperty("playerInvisibilityTime", "4000"));
@@ -46,4 +42,12 @@ public class GameLauncher {
         //Configuration configuration = new Configuration(new Position(0, 0), 3, 5, 4000, 5, 1000);
         return new Game(configuration, levels);
     }
+
+    public static Game laodDefault(){
+        Configuration configuration = new Configuration(new Position(0, 0), 3, 5, 4000, 5, 1000);
+        ArrayList<MapLevel> levels = new ArrayList<>();
+        levels.add(new MapLevel());
+        return new Game(configuration,levels);
+    }
+
 }

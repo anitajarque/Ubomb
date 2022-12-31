@@ -5,8 +5,6 @@ import fr.ubx.poo.ubomb.go.character.Player;
 import fr.ubx.poo.ubomb.go.decor.Decor;
 import fr.ubx.poo.ubomb.go.decor.Door;
 import fr.ubx.poo.ubomb.launcher.MapLevel;
-import javafx.geometry.Pos;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;

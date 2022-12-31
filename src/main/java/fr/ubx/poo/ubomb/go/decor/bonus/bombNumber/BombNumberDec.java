@@ -1,11 +1,9 @@
-package fr.ubx.poo.ubomb.go.decor.bonus.bomb;
+package fr.ubx.poo.ubomb.go.decor.bonus.bombNumber;
 
 import fr.ubx.poo.ubomb.game.Position;
-import fr.ubx.poo.ubomb.go.Takeable;
 import fr.ubx.poo.ubomb.go.character.Player;
-import fr.ubx.poo.ubomb.go.decor.bonus.Bonus;
 
-public class BombNumberDec extends Bomb {
+public class BombNumberDec extends BombNumber {
     public BombNumberDec(Position position) {
         super(position);
     }

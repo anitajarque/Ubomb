@@ -3,13 +3,12 @@ import fr.ubx.poo.ubomb.go.character.Monster;
 import fr.ubx.poo.ubomb.go.decor.Princess;
 import fr.ubx.poo.ubomb.go.decor.bonus.*;
 import fr.ubx.poo.ubomb.go.decor.*;
-import fr.ubx.poo.ubomb.go.decor.bonus.bomb.BombNumberDec;
-import fr.ubx.poo.ubomb.go.decor.bonus.bomb.BombNumberInc;
+import fr.ubx.poo.ubomb.go.decor.bonus.bombNumber.BombNumberDec;
+import fr.ubx.poo.ubomb.go.decor.bonus.bombNumber.BombNumberInc;
 import fr.ubx.poo.ubomb.go.decor.bonus.bombRange.BombRangeDec;
 import fr.ubx.poo.ubomb.go.decor.bonus.bombRange.BombRangeInc;
 import fr.ubx.poo.ubomb.launcher.Entity;
 import fr.ubx.poo.ubomb.launcher.MapLevel;
-import javafx.geometry.Pos;
 
 import java.util.*;
 
@@ -76,7 +75,7 @@ public class Level implements Grid {
                     case Empty: break;
                     default:
                         System.out.println(entity.toString());
-                        //                       throw new RuntimeException("EntityCode " + entity.name() + " not processed");
+                        //throw new RuntimeException("EntityCode " + entity.name() + " not processed");
                 }
             }
     }
@@ -93,6 +92,9 @@ public class Level implements Grid {
     }
 
     public Monster getMonster(Position position){ return this.monsters.get(position);}
+
+    public Monster removeMonster(Position position){ return this.monsters.remove(position);}
+
     @Override
     public void remove(Position position) {
         elements.remove(position);
@@ -119,7 +121,4 @@ public class Level implements Grid {
 
     public Map<Position, Monster> getMonsters() {return this.monsters; }
 
-    public void  addDecor(Decor decor){
-        elements.put(decor.getPosition(), decor);
-    }
 }

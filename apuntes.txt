@@ -1,3 +1,0 @@
-* Player y monter no implementan movable, eso solo eso para los objetos que pueden ser movidos por el jugador
-* Algunos bonus no funcionan
-* Faltaria cambiar el tamaño de la ventana para adaptarnos al tamaño del nivel

@@ -8,8 +8,8 @@ import fr.ubx.poo.ubomb.go.GameObject;
 import fr.ubx.poo.ubomb.go.character.Monster;
 import fr.ubx.poo.ubomb.go.decor.bonus.*;
 import fr.ubx.poo.ubomb.go.decor.*;
-import fr.ubx.poo.ubomb.go.decor.bonus.bomb.BombNumberDec;
-import fr.ubx.poo.ubomb.go.decor.bonus.bomb.BombNumberInc;
+import fr.ubx.poo.ubomb.go.decor.bonus.bombNumber.BombNumberDec;
+import fr.ubx.poo.ubomb.go.decor.bonus.bombNumber.BombNumberInc;
 import fr.ubx.poo.ubomb.go.decor.bonus.bombRange.BombRangeDec;
 import fr.ubx.poo.ubomb.go.decor.bonus.bombRange.BombRangeInc;
 import javafx.scene.layout.Pane;
@@ -46,6 +46,9 @@ public final class SpriteFactory {
             if(door.isOpen())
                 return new Sprite(layer,   DOOR_OPENED.getImage(), gameObject);
             return new Sprite(layer,   DOOR_CLOSED.getImage(), gameObject);
+        }
+        if(gameObject instanceof Bomb){
+            return new SpriteBomb(layer, (Bomb) gameObject);
         }
         throw new RuntimeException("Unsupported sprite for decor " + gameObject);
     }

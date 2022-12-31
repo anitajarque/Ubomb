@@ -8,13 +8,11 @@ import fr.ubx.poo.ubomb.game.Direction;
 import fr.ubx.poo.ubomb.game.Game;
 import fr.ubx.poo.ubomb.game.Position;
 import fr.ubx.poo.ubomb.go.*;
-import fr.ubx.poo.ubomb.go.decor.Princess;
 import fr.ubx.poo.ubomb.go.decor.bonus.*;
-import fr.ubx.poo.ubomb.go.decor.bonus.bomb.Bomb;
-import fr.ubx.poo.ubomb.go.decor.bonus.bomb.BombNumberDec;
+import fr.ubx.poo.ubomb.go.decor.bonus.bombNumber.BombNumber;
+import fr.ubx.poo.ubomb.go.decor.bonus.bombNumber.BombNumberDec;
 import fr.ubx.poo.ubomb.go.decor.bonus.bombRange.BombRange;
 import fr.ubx.poo.ubomb.go.decor.bonus.bombRange.BombRangeDec;
-import javafx.application.Platform;
 
 public class Player extends GameObject implements TakeVisitor {
 
@@ -59,7 +57,7 @@ public class Player extends GameObject implements TakeVisitor {
     }
 
     @Override
-    public void take(Bomb bomb) {
+    public void take(BombNumber bomb) {
         if(bomb instanceof BombNumberDec) {
             numBombs--;
             System.out.println("One less range bomb ...");
@@ -159,7 +157,7 @@ public class Player extends GameObject implements TakeVisitor {
 
     @Override
     public void explode() {
-        // TODO
+        damage();
     }
 
     public int getBombRange() {
@@ -179,4 +177,17 @@ public class Player extends GameObject implements TakeVisitor {
             this.keys--;
         }
     }
+
+    public void addBomb() {
+        if(bombBagCapacity>numBombs){
+            numBombs++;
+        }
+    }
+
+    public void useBomb() {
+        if(numBombs>0){
+            numBombs--;
+        }
+    }
+
 }
