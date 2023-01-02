@@ -14,11 +14,11 @@ When the player tries to move into a box, it check if the box can move in the sa
 
 In the GameEngine Update monsters, a random and posible movement for each monster is searched and the monster moveed into it. This hapens in a random but within a determined interval time. The speed is controlled changing the interval of posible time and frecuency of moves. The collisions are also check, and if the position is the correct and the monter is not in cool off mode, a live is lost from the player. 
 
-#Bonus and Malus Management
+# Bonus and Malus Management
 
 At the bonus package we have all the things that the player have some interaction with it.   The most important thing in this package are the bombs which are the ones that have had more work, because we have the class to create them and then we have 2 different package ones to control the number and other one just to control the range of the explosion.
 
 
-#Decor
+# Decor
 
 This ones (Bomb, Box, strone, tree, door, primcess)  extends from decor and some of them has the implements of Walkable or takeble depending of what the player can do with them.
