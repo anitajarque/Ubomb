@@ -34,6 +34,8 @@ public class Monster extends GameObject{
     }
 
     public void move(Direction direction){
+        //The moster has to be removed from the level elements map in order to
+        // update his position on the <Position, GameObjet> map
         Position nextPos = direction.nextPosition(getPosition());
         game.getLevel().getMonsters().remove(getPosition());
         this.setPosition(nextPos);

@@ -50,6 +50,8 @@ public class Game {
     }
 
     public void changeLevel(int level) {
+        //Update the level, and search for the connecting door, to
+        //position the player properly
         int newLevel = this.level + level;
         if(newLevel < this.levels.size() && newLevel>=0){
             this.level = newLevel;
@@ -76,6 +78,7 @@ public class Game {
     }
 
     public boolean checkNearDoors(Position position) {
+        //Search for doors sorrounding the Postion position
         Position pos;
         Decor decor;
         for(int i=-1; i<=1; i++){

@@ -9,6 +9,7 @@ import java.util.Properties;
 
 public class GameLauncher {
     public static Game load(Reader in) {
+        //Use the in file to read all the data to load the game
         int x, y, bombBagCapacity, playerLives, playerInvisibulityTime, mosterVelocity, monsterInvisibilyTime, numLevels;
         String[] pos;
         Position position;

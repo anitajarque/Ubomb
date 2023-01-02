@@ -118,9 +118,8 @@ public final class GameEngine {
     }
 
     private void updateMonsters() {
-        //System.out.println("Update monsters");
+        //For each monster, find a valid direction to move and move into it
         this.monsterList.forEach(monster -> {
-            //System.out.println(monster.toString());
             if(this.random.nextFloat() < 0.05){
                 int dir;
                 Direction direction;
@@ -141,6 +140,8 @@ public final class GameEngine {
     }
 
     private void checkSpriteChanges() {
+        //Check the game objets for the sprite changed flag and update the sprite using
+        // the sprite factory
         sprites.forEach(sprite -> {
             if (sprite.getGameObject().spriteChanged()) {
                 game.grid().remove(sprite.getPosition());
@@ -161,6 +162,8 @@ public final class GameEngine {
     }
 
     private void checkLevelChange() {
+        //Check if the level has changed, and if it has, update all the sprites
+        //removing the old level ones and replacing with the new ones.
         if(this.game.checkLevelChange()){
             sprites.forEach(Sprite::remove);
             sprites.clear();
@@ -286,8 +289,9 @@ public final class GameEngine {
     }
 
     private void checkCollision(long now) {
+        //Check position and cool down time to resolve the collision
+        //between player and mosnters
         if(game.getLevel().getMonster(player.getPosition()) != null && now - game.player().getTime() > game.configuration().playerInvisibilityTime()*100000){
-            //System.out.println("now : " + now + " player: " + player.getTime() + " dif: " + (now -player.getTime()));
             player.damage();
             player.setTime(now);
         }

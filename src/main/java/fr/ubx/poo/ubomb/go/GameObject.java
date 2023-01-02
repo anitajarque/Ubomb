@@ -16,10 +16,6 @@ public abstract class GameObject implements Walkable {
         return spriteChanged;
     }
 
-    public void changeSprite(boolean changed) {
-        this.spriteChanged = changed;
-    }
-
     private boolean spriteChanged = false;
     private Position position;
 
@@ -27,6 +23,12 @@ public abstract class GameObject implements Walkable {
         this.game = game;
         this.position = position;
     }
+
+    public void changeSprite(boolean changed) {
+        //Change the sprite changed flag so that the Game Engine can update the sprite
+        this.spriteChanged = changed;
+    }
+
 
     public GameObject(Position position) {
         this(null, position);

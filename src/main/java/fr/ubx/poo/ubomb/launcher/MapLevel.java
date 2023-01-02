@@ -33,7 +33,7 @@ public class MapLevel {
     }
 
     public MapLevel(String string){
-        System.out.println("Compresed string " + string);
+        //Decompress the string
         String finalString = "";
         int index = 0;
         while(index < string.length()-1){
@@ -48,8 +48,7 @@ public class MapLevel {
             index++;
         }
         finalString += "x";
-        System.out.println("Uncompresed string " + finalString);
-        System.out.println("Len :" + finalString.length());
+        //Define height and width of the map
         string = finalString;
         int x =0, y=0;
         index =0;
@@ -60,6 +59,7 @@ public class MapLevel {
         }
         this.height = height;
         this.width = string.indexOf("x");
+        //Populate the grid with the string info
         this.grid = new Entity[this.width][height];
         System.out.println("height " + this.height);
         System.out.println("width " + this.width);
